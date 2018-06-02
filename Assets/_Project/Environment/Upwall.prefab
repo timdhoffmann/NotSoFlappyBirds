@@ -9,44 +9,44 @@ Prefab:
     m_Modifications: []
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 0}
-  m_RootGameObject: {fileID: 1080113597036104}
+  m_RootGameObject: {fileID: 1852889211412176}
   m_IsPrefabParent: 1
---- !u!1 &1080113597036104
+--- !u!1 &1852889211412176
 GameObject:
   m_ObjectHideFlags: 0
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   serializedVersion: 5
   m_Component:
-  - component: {fileID: 4427445655856700}
-  - component: {fileID: 212796333958488432}
-  - component: {fileID: 61101292238285630}
+  - component: {fileID: 4887006969856210}
+  - component: {fileID: 212774037706527778}
+  - component: {fileID: 61044182447506448}
   m_Layer: 0
-  m_Name: GreenArrow
-  m_TagString: Untagged
+  m_Name: Upwall
+  m_TagString: upwall
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!4 &4427445655856700
+--- !u!4 &4887006969856210
 Transform:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1080113597036104}
-  m_LocalRotation: {x: -0, y: -0, z: 0.70710665, w: 0.70710695}
-  m_LocalPosition: {x: -0.862, y: 4.757, z: 0}
-  m_LocalScale: {x: 1, y: 3.548542, z: 1}
+  m_GameObject: {fileID: 1852889211412176}
+  m_LocalRotation: {x: -0, y: -0, z: 1, w: 0.00000026822087}
+  m_LocalPosition: {x: -3.86, y: 4.23, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 90.00001}
---- !u!61 &61101292238285630
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 180.00002}
+--- !u!61 &61044182447506448
 BoxCollider2D:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1080113597036104}
+  m_GameObject: {fileID: 1852889211412176}
   m_Enabled: 1
   m_Density: 1
   m_Material: {fileID: 0}
@@ -66,12 +66,12 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 1, y: 5.952381}
   m_EdgeRadius: 0
---- !u!212 &212796333958488432
+--- !u!212 &212774037706527778
 SpriteRenderer:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1080113597036104}
+  m_GameObject: {fileID: 1852889211412176}
   m_Enabled: 1
   m_CastShadows: 0
   m_ReceiveShadows: 0
