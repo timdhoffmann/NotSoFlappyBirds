@@ -72,14 +72,11 @@ public class PopulationManager : MonoBehaviour
     private void BreedNewPopulation ()
     {
         // Population sorted by fittest last.
-        // Fitness indicated by DistanceWalked.
+        // Fitness indicated by DistanceTravelled.
+        // Crashes count as a penalty.
         List<GameObject> sortedPopulation = population.OrderBy
-        (o =>
-            (   // Crashes count as a penalty.
-                o.GetComponent<Brain>().DistanceTravelled -
-                o.GetComponent<Brain>().Crashes * penaltyMultiplier
-            )
-        ).ToList();
+            (o => o.GetComponent<Brain>().DistanceTravelled).ThenByDescending
+            (o => o.GetComponent<Brain>().Crashes).ToList();
         population.Clear();
 
         // Breed last 20% of list (fittest).
