@@ -121,7 +121,7 @@ MonoBehaviour:
   eyes: {fileID: 1001566994683280}
   raycastMaxDistance: 1
   debugRaycastLifetime: 1
-  moveSpeed: 0.01
+  moveSpeed: 0.1
   canSeeTop: 0
   canSeeBottom: 0
   canSeeUpWall: 0

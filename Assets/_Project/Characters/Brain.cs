@@ -16,14 +16,14 @@ public class Brain : MonoBehaviour
     [SerializeField] private GameObject eyes;
     [SerializeField] private float raycastMaxDistance = 1f;
     [SerializeField] private float debugRaycastLifetime = 1f;
-    [SerializeField] private float moveSpeed = 0.01f;
+    [SerializeField] private float moveSpeed = 0.1f;
     [SerializeField] private bool canSeeTop = false;
     [SerializeField] private bool canSeeBottom = false;
     [SerializeField] private bool canSeeUpWall = false;
     [SerializeField] private bool canSeeDownWall = false;
 
     private int DnaLength = 5;
-    private Vector3 startPosition;
+    private Vector2 startPosition;
     private Rigidbody2D rb;
     private bool isAlive = true;
     private float timeAlive = 0f;
@@ -50,8 +50,7 @@ public class Brain : MonoBehaviour
     {
         startPosition = this.transform.position;
         rb = GetComponent<Rigidbody2D>();
-        Debug.Assert(rb);
-
+        Debug.Assert(rb, "RigidBody2D not found.", this);
         Debug.Assert(eyes, "Eyes not found.", this);
     }
 
