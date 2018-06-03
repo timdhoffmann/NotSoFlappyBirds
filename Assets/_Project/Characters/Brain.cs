@@ -16,7 +16,8 @@ public class Brain : MonoBehaviour
     [SerializeField] private GameObject eyes;
     [SerializeField] private float raycastMaxDistance = 1f;
     [SerializeField] private float debugRaycastLifetime = 1f;
-    [SerializeField] private float moveSpeed = 0.1f;
+    [SerializeField] private float forwardSpeedMultiplyer = 1f;
+    [SerializeField] private float verticalSpeedMultiplyer = 0.1f;
     [SerializeField] private bool canSeeTop = false;
     [SerializeField] private bool canSeeBottom = false;
     [SerializeField] private bool canSeeUpWall = false;
@@ -153,8 +154,8 @@ public class Brain : MonoBehaviour
             upForce = Dna.Genes[4];
         }
 
-        rb.AddForce(this.transform.right * forwardForce);
-        rb.AddForce(this.transform.up * upForce * moveSpeed);
+        rb.AddForce(this.transform.right * forwardForce * forwardSpeedMultiplyer);
+        rb.AddForce(this.transform.up * upForce * verticalSpeedMultiplyer);
 
         DistanceTravelled = Vector2.Distance(startPosition, this.transform.position);
     }

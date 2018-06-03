@@ -75,10 +75,13 @@ public class PopulationManager : MonoBehaviour
         // Breed last 20% of list (fittest).
         for (var i = (4 * sortedPopulation.Count / 5) - 1; i < sortedPopulation.Count - 1; i++)
         {
+            // Bumber of Breedings must take percentage of fittest selection into account
+            // to keep population size stable.
             population.Add(Breed(sortedPopulation[i], sortedPopulation[i + 1]));
             population.Add(Breed(sortedPopulation[i + 1], sortedPopulation[i]));
             population.Add(Breed(sortedPopulation[i], sortedPopulation[i + 1]));
             population.Add(Breed(sortedPopulation[i + 1], sortedPopulation[i]));
+            population.Add(Breed(sortedPopulation[i], sortedPopulation[i + 1]));
         }
 
         // Destroy all parents and previous population.
