@@ -19,7 +19,7 @@ GameObject:
   serializedVersion: 5
   m_Component:
   - component: {fileID: 4579863991626496}
-  m_Layer: 8
+  m_Layer: 2
   m_Name: Eyes
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -37,8 +37,8 @@ GameObject:
   - component: {fileID: 212325247595705622}
   - component: {fileID: 58706514295789394}
   - component: {fileID: 50620169718523442}
-  - component: {fileID: 114688748072093372}
-  m_Layer: 8
+  - component: {fileID: 114296069319175644}
+  m_Layer: 2
   m_Name: Bird
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -51,13 +51,13 @@ Transform:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1001566994683280}
-  m_LocalRotation: {x: 0, y: 0.7071068, z: 0, w: 0.7071068}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0.397, y: 0, z: -0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 4901551439303756}
   m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: 0, y: 90, z: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!4 &4901551439303756
 Transform:
   m_ObjectHideFlags: 1
@@ -107,7 +107,7 @@ CircleCollider2D:
   m_Offset: {x: 0, y: 0}
   serializedVersion: 2
   m_Radius: 0.36
---- !u!114 &114688748072093372
+--- !u!114 &114296069319175644
 MonoBehaviour:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
@@ -115,12 +115,17 @@ MonoBehaviour:
   m_GameObject: {fileID: 1629249223627068}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 70db827ffbcba4f86b837a49e721b3bd, type: 3}
+  m_Script: {fileID: 11500000, guid: cc2c140a4681c7840a2336ba693c2d6f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   eyes: {fileID: 1001566994683280}
-  timeAlive: 0
-  distanceTravelled: 0
+  raycastMaxDistance: 1
+  debugRaycastLifetime: 1
+  moveSpeed: 0.01
+  canSeeTop: 0
+  canSeeBottom: 0
+  canSeeUpWall: 0
+  canSeeDownWall: 0
 --- !u!212 &212325247595705622
 SpriteRenderer:
   m_ObjectHideFlags: 1
