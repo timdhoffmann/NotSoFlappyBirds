@@ -48,9 +48,6 @@ public class Brain : MonoBehaviour
 
     private void Start ()
     {
-        Debug.Assert(GetComponent<MeshRenderer>());
-        GetComponent<MeshRenderer>().material.color = Color.red;
-
         startPosition = this.transform.position;
         rb = GetComponent<Rigidbody2D>();
         Debug.Assert(rb);
