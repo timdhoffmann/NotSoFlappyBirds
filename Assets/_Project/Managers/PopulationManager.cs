@@ -72,8 +72,8 @@ public class PopulationManager : MonoBehaviour
         List<GameObject> sortedPopulation = population.OrderBy(o => o.GetComponent<Brain>().DistanceTravelled).ToList();
         population.Clear();
 
-        // Breed last 25% of list (fittest).
-        for (var i = (3 * sortedPopulation.Count / 4) - 1; i < sortedPopulation.Count - 1; i++)
+        // Breed last 20% of list (fittest).
+        for (var i = (4 * sortedPopulation.Count / 5) - 1; i < sortedPopulation.Count - 1; i++)
         {
             population.Add(Breed(sortedPopulation[i], sortedPopulation[i + 1]));
             population.Add(Breed(sortedPopulation[i + 1], sortedPopulation[i]));
