@@ -14,6 +14,7 @@ public class PopulationManager : MonoBehaviour
     [SerializeField] private GameObject botPrefab;
     [SerializeField] private int populationSize = 50;
     [SerializeField] private float trialTime = 5;
+    [SerializeField] private float penaltyMultiplier = 2f;
     [SerializeField] private float spawnOffset = 1f; // TODO: Needed?
 
     private List<GameObject> population = new List<GameObject>();
@@ -35,6 +36,9 @@ public class PopulationManager : MonoBehaviour
         bots.transform.parent = dynamicObjects.transform;
 
         GenerateFirstGeneration();
+
+        // Speed multiplier for the simulation.
+        Time.timeScale = 5;
     }
 
     private void GenerateFirstGeneration ()
@@ -68,8 +72,11 @@ public class PopulationManager : MonoBehaviour
     private void BreedNewPopulation ()
     {
         // Population sorted by fittest last.
-        // Fitness indicated by DistanceWalked.
-        List<GameObject> sortedPopulation = population.OrderBy(o => o.GetComponent<Brain>().DistanceTravelled).ToList();
+        // Fitness indicated by DistanceTravelled.
+        // Crashes count as a penalty.
+        List<GameObject> sortedPopulation = population.OrderBy
+            (o => o.GetComponent<Brain>().DistanceTravelled).ThenByDescending
+            (o => o.GetComponent<Brain>().Crashes).ToList();
         population.Clear();
 
         // Breed last 20% of list (fittest).

@@ -16,7 +16,7 @@ public class Brain : MonoBehaviour
     [SerializeField] private GameObject eyes;
     [SerializeField] private float raycastMaxDistance = 1f;
     [SerializeField] private float debugRaycastLifetime = 1f;
-    [SerializeField] private float forwardSpeedMultiplyer = 1f;
+    [SerializeField] private float forwardSpeedMultiplyer = 2f;
     [SerializeField] private float verticalSpeedMultiplyer = 0.1f;
     [SerializeField] private bool canSeeTop = false;
     [SerializeField] private bool canSeeBottom = false;
@@ -166,9 +166,10 @@ public class Brain : MonoBehaviour
         {
             isAlive = false;
         }
-        else
-        {
-            Crashes++;
-        }
+    }
+
+    private void OnCollisionStay2D (Collision2D collision)
+    {
+        Crashes++;
     }
 }
