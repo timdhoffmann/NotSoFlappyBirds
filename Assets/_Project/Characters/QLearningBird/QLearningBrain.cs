@@ -30,6 +30,8 @@ public class QLearningBrain : MonoBehaviour
     [SerializeField] private GameObject _stats;
     private Text[] _statsTexts;
     private Vector2 _startPosition;
+    private bool isAlive = true;
+    private Senses _senses;
 
     private Ann _ann;
     // List of past actions and rewards.
@@ -67,6 +69,9 @@ public class QLearningBrain : MonoBehaviour
         _statsTexts = _stats.GetComponentsInChildren<Text>();
         Assert.IsNotNull(_statsTexts);
 
+        _senses = GetComponent<Senses>();
+        Assert.IsNotNull(_senses);
+
         _startPosition = transform.position;
 
         Time.timeScale = 5.0f;
@@ -85,8 +90,8 @@ public class QLearningBrain : MonoBehaviour
         var states = new List<double>
         {
             transform.position.y,
-            //_ball.transform.position.x,
-            //_ball.GetComponent<Rigidbody>().angularVelocity.z
+            _senses.DistanceToTop,
+            _senses.DistanceToBottom
         };
 
         var qValues = new List<double>();
@@ -245,5 +250,50 @@ public class QLearningBrain : MonoBehaviour
         //_ball.transform.position = _startPosition;
         //_ball.GetComponent<Rigidbody>().velocity = Vector3.zero;
         //_ball.GetComponent<Rigidbody>().angularVelocity = Vector3.zero;
+    }
+
+    //private void MoveBasedOnDna ()
+    //{
+    //    float upForce = 0f;
+    //    float forwardForce = 1f;
+
+    //    if (canSeeUpWall)
+    //    {
+    //        upForce = Dna.Genes[0];
+    //    }
+    //    else if(canSeeDownWall)
+    //    {
+    //        upForce = Dna.Genes[1];
+    //    }
+    //    else if (canSeeTop)
+    //    {
+    //        upForce = Dna.Genes[2];
+    //    }
+    //    else if (canSeeBottom)
+    //    {
+    //        upForce = Dna.Genes[3];
+    //    }
+    //    else
+    //    {
+    //        upForce = Dna.Genes[4];
+    //    }
+
+    //    rb.AddForce(this.transform.right * forwardForce * forwardSpeedMultiplyer);
+    //    rb.AddForce(this.transform.up * upForce * verticalSpeedMultiplyer);
+
+    //    DistanceTravelled = Vector2.Distance(startPosition, this.transform.position);
+    //}
+
+    private void OnCollisionEnter2D(Collision2D collision)
+    {
+        if (collision.gameObject.tag == "dead")
+        {
+            isAlive = false;
+        }
+    }
+
+    private void OnCollisionStay2D(Collision2D collision)
+    {
+        Crashes++;
     }
 }

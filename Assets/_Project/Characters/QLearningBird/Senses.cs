@@ -7,8 +7,8 @@ public class Senses : MonoBehaviour
     #region Properties
     public float DistanceTravelled { get; private set; } = 0;
 
-    public bool CanSeeTop { get; private set; } = false;
-    public bool CanSeeBottom { get; private set; } = false;
+    public float DistanceToTop { get; private set; } = 0d;
+    public float DistanceToBottom { get; private set; } = 0d;
     #endregion
 
     #region Fields
@@ -39,8 +39,8 @@ public class Senses : MonoBehaviour
     /// </summary>
     private void CheckForObstacle ()
     {
-        CanSeeBottom = false;
-        CanSeeTop = false;
+        DistanceToBottom = 0f;
+        DistanceToTop = 0f;
 
         Vector2 origin = _eyes.transform.position;
         Vector2 up = _eyes.transform.up;
@@ -55,7 +55,7 @@ public class Senses : MonoBehaviour
         {
             if (hit.collider.gameObject.tag == "top")
             {
-                CanSeeTop = true;
+                DistanceToTop = hit.distance;
             }
         }
 
@@ -65,7 +65,7 @@ public class Senses : MonoBehaviour
         {
             if (hit.collider.gameObject.tag == "bottom")
             {
-                CanSeeBottom = true;
+                DistanceToBottom = hit.distance;
             }
         }
     }
