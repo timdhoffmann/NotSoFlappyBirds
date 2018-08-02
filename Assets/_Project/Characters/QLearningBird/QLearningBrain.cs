@@ -1,4 +1,4 @@
-﻿using System.Collections;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
@@ -24,13 +24,12 @@ public class Replay
 }
 #endregion
 
-public class Brain : MonoBehaviour
+public class QLearningBrain : MonoBehaviour
 {
     #region Fields
-    [SerializeField] private GameObject _ball;
     [SerializeField] private GameObject _stats;
     private Text[] _statsTexts;
-    private Vector3 _ballStartPosition;
+    private Vector2 _startPosition;
 
     private Ann _ann;
     // List of past actions and rewards.
@@ -50,7 +49,7 @@ public class Brain : MonoBehaviour
     // Decay amount for each update.
     private float _exploreDecay = 0.0001f;
 
-    // How many times the ball is dropped.
+    // How many times a wall is hit.
     private int _failCount = 0;
     private float _timer = 0f;
     private float _maxBalanceTime = 0f;
@@ -68,8 +67,7 @@ public class Brain : MonoBehaviour
         _statsTexts = _stats.GetComponentsInChildren<Text>();
         Assert.IsNotNull(_statsTexts);
 
-        Assert.IsNotNull(_ball);
-        _ballStartPosition = _ball.transform.position;
+        _startPosition = transform.position;
 
         Time.timeScale = 5.0f;
     }
@@ -77,7 +75,7 @@ public class Brain : MonoBehaviour
     // Update is called once per frame
     private void Update()
     {
-        UpdateStats();
+        // UpdateStats();
     }
 
     private void FixedUpdate()
@@ -86,9 +84,9 @@ public class Brain : MonoBehaviour
 
         var states = new List<double>
         {
-            transform.rotation.z,
-            _ball.transform.position.x,
-            _ball.GetComponent<Rigidbody>().angularVelocity.z // TODO: Double check axis!
+            transform.position.y,
+            //_ball.transform.position.x,
+            //_ball.GetComponent<Rigidbody>().angularVelocity.z
         };
 
         var qValues = new List<double>();
@@ -118,22 +116,22 @@ public class Brain : MonoBehaviour
         }
 
         // Reward based on the state of the ball.
-        Assert.IsNotNull(_ball.GetComponent<BallState>());
-        if (_ball.GetComponent<BallState>().Dropped)
-        {
-            _reward = -1.0f;
-        }
-        else
-        {
-            _reward = 0.1f;
-        }
+        //Assert.IsNotNull(_ball.GetComponent<BallState>());
+        //if (_ball.GetComponent<BallState>().Dropped)
+        //{
+        //    _reward = -1.0f;
+        //}
+        //else
+        //{
+        //    _reward = 0.1f;
+        //}
 
         // Set up replay memory.
-        var lastMemory = new Replay(
-            transform.rotation.z,
-            _ball.transform.position.x,
-            _ball.GetComponent<Rigidbody>().angularVelocity.x,
-            _reward);
+        //var lastMemory = new Replay(
+            //transform.rotation.z,
+            //_ball.transform.position.x,
+            //_ball.GetComponent<Rigidbody>().angularVelocity.x,
+            //_reward);
 
         // Ensure _memoryCapacity is not exceeded.
         if (_replayMemory.Count > _memoryCapacity)
@@ -141,13 +139,13 @@ public class Brain : MonoBehaviour
             _replayMemory.RemoveAt(0);
         }
 
-        _replayMemory.Add(lastMemory);
+        //_replayMemory.Add(lastMemory);
 
         // Execute Q-Learning training when ball is dropped.
-        if (_ball.GetComponent<BallState>().Dropped)
-        {
-            TrainQLearning(maxQValue);
-        }
+        //if (_ball.GetComponent<BallState>().Dropped)
+        //{
+        //    TrainQLearning(maxQValue);
+        //}
     }
 
     private void TrainQLearning(double maxQValue)
@@ -187,7 +185,7 @@ public class Brain : MonoBehaviour
 
     private void ResetOnFail()
     {
-        _ball.GetComponent<BallState>().Dropped = false;
+        //_ball.GetComponent<BallState>().Dropped = false;
         transform.rotation = Quaternion.identity;
         ResetBall();
         _replayMemory.Clear();
@@ -215,7 +213,7 @@ public class Brain : MonoBehaviour
     {
         if (Input.GetKeyDown("space"))
         {
-            _ball.transform.position = _ballStartPosition;
+            //_ball.transform.position = _startPosition;
         }
     }
     /// <summary>
@@ -244,8 +242,8 @@ public class Brain : MonoBehaviour
 
     private void ResetBall()
     {
-        _ball.transform.position = _ballStartPosition;
-        _ball.GetComponent<Rigidbody>().velocity = Vector3.zero;
-        _ball.GetComponent<Rigidbody>().angularVelocity = Vector3.zero;
+        //_ball.transform.position = _startPosition;
+        //_ball.GetComponent<Rigidbody>().velocity = Vector3.zero;
+        //_ball.GetComponent<Rigidbody>().angularVelocity = Vector3.zero;
     }
 }
