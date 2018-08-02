@@ -30,7 +30,7 @@ public class QLearningBrain : MonoBehaviour
     private GameObject _stats;
     // Make sure the value is large enough to achieve success.
     [SerializeField] 
-    private float _verticalSpeedMultiplyer = 0.1f;
+    private float _verticalSpeedMultiplyer = 50f;
     [SerializeField]
     private float _timeScale = 1f;
     private Text[] _statsTexts;
