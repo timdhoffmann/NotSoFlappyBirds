@@ -27,11 +27,15 @@ public class Replay
 public class QLearningBrain : MonoBehaviour
 {
     #region Fields
-    [SerializeField] private GameObject _stats;
+    [SerializeField] 
+    private GameObject _stats;
+    [SerializeField] 
+    private float _verticalSpeedMultiplyer = 0.1f;
     private Text[] _statsTexts;
     private Vector2 _startPosition;
-    private bool isAlive = true;
-    private Senses _senses;
+    private bool _isAlive = true;
+    private Senses _senses = null;
+    private Rigidbody2D _rigidbody2D;
 
     private Ann _ann;
     // List of past actions and rewards.
@@ -44,8 +48,10 @@ public class QLearningBrain : MonoBehaviour
     private float _discount = 0.99f;
 
     // Chance of picking random action.
-    [SerializeField] private bool _useExploration = false;
-    [SerializeField] private float _exploreRate = 100f;
+    [SerializeField] 
+    private bool _useExploration = false;
+    [SerializeField] 
+    private float _exploreRate = 100f;
     private float _maxExploreRate = 100f;
     private float _minExploreRate = 0.01f;
     // Decay amount for each update.
@@ -72,6 +78,9 @@ public class QLearningBrain : MonoBehaviour
         _senses = GetComponent<Senses>();
         Assert.IsNotNull(_senses);
 
+        _rigidbody2D = GetComponent<Rigidbody2D>();
+        Assert.IsNotNull(_rigidbody2D);
+
         _startPosition = transform.position;
 
         Time.timeScale = 5.0f;
@@ -80,7 +89,7 @@ public class QLearningBrain : MonoBehaviour
     // Update is called once per frame
     private void Update()
     {
-        // UpdateStats();
+        UpdateStats();
     }
 
     private void FixedUpdate()
@@ -107,36 +116,34 @@ public class QLearningBrain : MonoBehaviour
             maxQValueIndex = Random.Range(0, 2);
         }
 
-        // TOTO: Check case for 0 and 1 and when it relates to left/right.
-        // Rotate based on chosen maxQValue.
+        // Apply force based on chosen maxQValue.
         if (maxQValueIndex == 0)
         {
-            // Rotate to the right.
-            transform.Rotate(Vector3.forward, _tiltSpeed * (float)qValues[maxQValueIndex]);
+            // Apply up force.
+            _rigidbody2D.AddForce(transform.up * (float)qValues[maxQValueIndex] * _verticalSpeedMultiplyer);
         }
         else if (maxQValueIndex == 1)
         {
-            // Rotate to the left.
-            transform.Rotate(Vector3.forward, -_tiltSpeed * (float)qValues[maxQValueIndex]);
+            // Apply down force.
+            _rigidbody2D.AddForce(-transform.up * (float)qValues[maxQValueIndex] * _verticalSpeedMultiplyer);
         }
 
-        // Reward based on the state of the ball.
-        //Assert.IsNotNull(_ball.GetComponent<BallState>());
-        //if (_ball.GetComponent<BallState>().Dropped)
-        //{
-        //    _reward = -1.0f;
-        //}
-        //else
-        //{
-        //    _reward = 0.1f;
-        //}
+         //Reward based on the state of the bird.
+        if (!_isAlive)
+        {
+            _reward = -1.0f;
+        }
+        else
+        {
+            _reward = 0.1f;
+        }
 
         // Set up replay memory.
-        //var lastMemory = new Replay(
-            //transform.rotation.z,
-            //_ball.transform.position.x,
-            //_ball.GetComponent<Rigidbody>().angularVelocity.x,
-            //_reward);
+        var lastMemory = new Replay(
+            transform.position.y,
+            _senses.DistanceToTop,
+            _senses.DistanceToBottom,
+            _reward);
 
         // Ensure _memoryCapacity is not exceeded.
         if (_replayMemory.Count > _memoryCapacity)
@@ -144,13 +151,13 @@ public class QLearningBrain : MonoBehaviour
             _replayMemory.RemoveAt(0);
         }
 
-        //_replayMemory.Add(lastMemory);
+        _replayMemory.Add(lastMemory);
 
-        // Execute Q-Learning training when ball is dropped.
-        //if (_ball.GetComponent<BallState>().Dropped)
-        //{
-        //    TrainQLearning(maxQValue);
-        //}
+        // Execute Q-Learning training when bird collided.
+        if (!_isAlive)
+        {
+            TrainQLearning(maxQValue);
+        }
     }
 
     private void TrainQLearning(double maxQValue)
@@ -190,9 +197,8 @@ public class QLearningBrain : MonoBehaviour
 
     private void ResetOnFail()
     {
-        //_ball.GetComponent<BallState>().Dropped = false;
-        transform.rotation = Quaternion.identity;
-        ResetBall();
+        //transform.rotation = Quaternion.identity;
+        ResetPosition();
         _replayMemory.Clear();
         _failCount++;
     }
@@ -218,7 +224,7 @@ public class QLearningBrain : MonoBehaviour
     {
         if (Input.GetKeyDown("space"))
         {
-            //_ball.transform.position = _startPosition;
+            transform.position = _startPosition;
         }
     }
     /// <summary>
@@ -245,55 +251,17 @@ public class QLearningBrain : MonoBehaviour
         return result;
     }
 
-    private void ResetBall()
+    private void ResetPosition()
     {
-        //_ball.transform.position = _startPosition;
-        //_ball.GetComponent<Rigidbody>().velocity = Vector3.zero;
-        //_ball.GetComponent<Rigidbody>().angularVelocity = Vector3.zero;
+        transform.position = _startPosition;
+        GetComponent<Rigidbody>().velocity = Vector3.zero;
     }
-
-    //private void MoveBasedOnDna ()
-    //{
-    //    float upForce = 0f;
-    //    float forwardForce = 1f;
-
-    //    if (canSeeUpWall)
-    //    {
-    //        upForce = Dna.Genes[0];
-    //    }
-    //    else if(canSeeDownWall)
-    //    {
-    //        upForce = Dna.Genes[1];
-    //    }
-    //    else if (canSeeTop)
-    //    {
-    //        upForce = Dna.Genes[2];
-    //    }
-    //    else if (canSeeBottom)
-    //    {
-    //        upForce = Dna.Genes[3];
-    //    }
-    //    else
-    //    {
-    //        upForce = Dna.Genes[4];
-    //    }
-
-    //    rb.AddForce(this.transform.right * forwardForce * forwardSpeedMultiplyer);
-    //    rb.AddForce(this.transform.up * upForce * verticalSpeedMultiplyer);
-
-    //    DistanceTravelled = Vector2.Distance(startPosition, this.transform.position);
-    //}
 
     private void OnCollisionEnter2D(Collision2D collision)
     {
         if (collision.gameObject.tag == "dead")
         {
-            isAlive = false;
+            _isAlive = false;
         }
-    }
-
-    private void OnCollisionStay2D(Collision2D collision)
-    {
-        Crashes++;
     }
 }

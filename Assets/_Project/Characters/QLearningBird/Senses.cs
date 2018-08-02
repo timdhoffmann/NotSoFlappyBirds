@@ -5,17 +5,16 @@ using UnityEngine;
 public class Senses : MonoBehaviour
 {
     #region Properties
-    public float DistanceTravelled { get; private set; } = 0;
+    public float DistanceTravelled { get; private set; } = 0f;
 
-    public float DistanceToTop { get; private set; } = 0d;
-    public float DistanceToBottom { get; private set; } = 0d;
+    public float DistanceToTop { get; private set; } = 0f;
+    public float DistanceToBottom { get; private set; } = 0f;
     #endregion
 
     #region Fields
     [SerializeField] private GameObject _eyes;
-    [SerializeField] private float _raycastMaxDistance = 1f;
+    [SerializeField] private float _raycastMaxDistance = 100f;
     [SerializeField] private float _debugRaycastLifetime = 1f;
-    [SerializeField] private float _verticalSpeedMultiplyer = 0.1f;
     #endregion
 
     private void Start ()

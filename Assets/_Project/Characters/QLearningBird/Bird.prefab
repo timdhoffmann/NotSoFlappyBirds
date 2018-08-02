@@ -119,15 +119,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9aebb6a7a66ad4931a9a6a3bd7e2b6ca, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  eyes: {fileID: 1502180003434542}
-  raycastMaxDistance: 1
-  debugRaycastLifetime: 1
-  forwardSpeedMultiplyer: 2
-  verticalSpeedMultiplyer: 0.1
-  canSeeTop: 0
-  canSeeBottom: 0
-  canSeeUpWall: 0
-  canSeeDownWall: 0
+  _eyes: {fileID: 1502180003434542}
+  _raycastMaxDistance: 100
+  _debugRaycastLifetime: 1
 --- !u!114 &114920620946916716
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -140,6 +134,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _stats: {fileID: 0}
+  _verticalSpeedMultiplyer: 1
   _useExploration: 0
   _exploreRate: 100
 --- !u!212 &212764054482809640
