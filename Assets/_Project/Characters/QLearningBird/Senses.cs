@@ -5,8 +5,6 @@ using UnityEngine;
 public class Senses : MonoBehaviour
 {
     #region Properties
-    public float DistanceTravelled { get; private set; } = 0f;
-
     public double DistanceToTop { get; private set; } = 0d;
     public double DistanceToBottom { get; private set; } = 0d;
     #endregion
@@ -14,7 +12,7 @@ public class Senses : MonoBehaviour
     #region Fields
     [SerializeField] private GameObject _eyes;
     [SerializeField] private float _raycastMaxDistance = 100f;
-    [SerializeField] private float _debugRaycastLifetime = 1f;
+    [SerializeField] private float _debugRaycastLifetime = 0f;
     #endregion
 
     private void Start ()
@@ -27,8 +25,8 @@ public class Senses : MonoBehaviour
     /// </summary>
     public void CheckForObstacle ()
     {
-        DistanceToBottom = 0f;
-        DistanceToTop = 0f;
+        DistanceToBottom = 0d;
+        DistanceToTop = 0d;
 
         Vector2 origin = _eyes.transform.position;
         Vector2 up = _eyes.transform.up;
@@ -57,14 +55,4 @@ public class Senses : MonoBehaviour
             }
         }
     }
-
-    //private void FixedUpdate ()
-    //{
-    //    if (!isAlive)
-    //    {
-    //        return;
-    //    }
-
-    //     MoveBasedOnDna();
-    //}
 }

@@ -11,13 +11,12 @@ public class Replay
     public List<double> States { get; set; }
     public double Reward { get; set; }
 
-    public Replay(double zRotation, double ballPositionX, double ballVelocityX, double reward)
+    public Replay(double distanceToTop, double distanceToBottom, double reward)
     {
         States = new List<double>
         {
-            zRotation,
-            ballPositionX,
-            ballVelocityX
+            distanceToTop,
+            distanceToBottom,
         };
         Reward = reward;
     }
@@ -69,7 +68,7 @@ public class QLearningBrain : MonoBehaviour
     // Use this for initialization
     private void Start()
     {
-        _ann = new Ann(3, 2, 1, 6, 0.2);
+        _ann = new Ann(2, 2, 1, 6, 0.2);
 
         _statsTexts = _stats.GetComponentsInChildren<Text>();
         Assert.IsNotNull(_statsTexts);
@@ -93,7 +92,6 @@ public class QLearningBrain : MonoBehaviour
 
         var states = new List<double>
         {
-            transform.position.y,
             _senses.DistanceToTop,
             _senses.DistanceToBottom
         };
@@ -135,7 +133,6 @@ public class QLearningBrain : MonoBehaviour
 
         // Set up replay memory.
         var lastMemory = new Replay(
-            transform.position.y,
             _senses.DistanceToTop,
             _senses.DistanceToBottom,
             _reward);
