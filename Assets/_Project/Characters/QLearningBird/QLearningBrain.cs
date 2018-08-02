@@ -29,8 +29,11 @@ public class QLearningBrain : MonoBehaviour
     #region Fields
     [SerializeField] 
     private GameObject _stats;
+    // Make sure the value is large enough to achieve success.
     [SerializeField] 
     private float _verticalSpeedMultiplyer = 0.1f;
+    [SerializeField]
+    private float _timeScale = 1f;
     private Text[] _statsTexts;
     private Vector2 _startPosition;
     private bool _isAlive = true;
@@ -61,10 +64,6 @@ public class QLearningBrain : MonoBehaviour
     private int _failCount = 0;
     private float _timer = 0f;
     private float _maxBalanceTime = 0f;
-
-    // Max angle to apply to tilting each update.
-    // Make sure the value is large enough to achieve success.
-    private float _tiltSpeed = 0.5f;
     #endregion
 
     // Use this for initialization
@@ -83,18 +82,14 @@ public class QLearningBrain : MonoBehaviour
 
         _startPosition = transform.position;
 
-        Time.timeScale = 5.0f;
-    }
-
-    // Update is called once per frame
-    private void Update()
-    {
-        UpdateStats();
+        Time.timeScale = _timeScale;
     }
 
     private void FixedUpdate()
     {
         _timer += Time.deltaTime;
+
+        _senses.CheckForObstacle();
 
         var states = new List<double>
         {
@@ -162,6 +157,8 @@ public class QLearningBrain : MonoBehaviour
 
     private void TrainQLearning(double maxQValue)
     {
+        Debug.Log("TrainQLearning");
+
         for (int i = _replayMemory.Count - 1; i >= 0; i--)
         {
             var currentTrainingOutputs = new List<double>();
@@ -195,12 +192,19 @@ public class QLearningBrain : MonoBehaviour
         ResetOnFail();
     }
 
+    // Update is called once per frame
+    private void Update()
+    {
+        UpdateStats();
+    }
+
     private void ResetOnFail()
     {
         //transform.rotation = Quaternion.identity;
         ResetPosition();
         _replayMemory.Clear();
         _failCount++;
+        _isAlive = true;
     }
 
     private void UpdateMaxBalanceTime()
@@ -227,6 +231,7 @@ public class QLearningBrain : MonoBehaviour
             transform.position = _startPosition;
         }
     }
+
     /// <summary>
     /// Normalizes all values to a range between 0 and 1,
     /// so that all values add up to 1.
@@ -254,13 +259,14 @@ public class QLearningBrain : MonoBehaviour
     private void ResetPosition()
     {
         transform.position = _startPosition;
-        GetComponent<Rigidbody>().velocity = Vector3.zero;
+        _rigidbody2D.velocity = Vector2.zero;
     }
 
     private void OnCollisionEnter2D(Collision2D collision)
     {
-        if (collision.gameObject.tag == "dead")
+        if (collision.gameObject.tag == "top" || collision.gameObject.tag == "bottom")
         {
+            Debug.Log("Collided");
             _isAlive = false;
         }
     }

@@ -7,8 +7,8 @@ public class Senses : MonoBehaviour
     #region Properties
     public float DistanceTravelled { get; private set; } = 0f;
 
-    public float DistanceToTop { get; private set; } = 0f;
-    public float DistanceToBottom { get; private set; } = 0f;
+    public double DistanceToTop { get; private set; } = 0d;
+    public double DistanceToBottom { get; private set; } = 0d;
     #endregion
 
     #region Fields
@@ -22,21 +22,10 @@ public class Senses : MonoBehaviour
         Debug.Assert(_eyes, "Eyes not found.", this);
     }
 
-    // Update is called once per frame
-    void Update ()
-    {
-        //if(!isAlive)
-        //{
-        //    return;
-        //}
-
-        CheckForObstacle();
-    }
-
     /// <summary>
     /// Checks for obstacle on the top or bottom.
     /// </summary>
-    private void CheckForObstacle ()
+    public void CheckForObstacle ()
     {
         DistanceToBottom = 0f;
         DistanceToTop = 0f;

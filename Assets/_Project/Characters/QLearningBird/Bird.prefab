@@ -134,7 +134,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _stats: {fileID: 0}
-  _verticalSpeedMultiplyer: 1
+  _verticalSpeedMultiplyer: 50
+  _timeScale: 2
   _useExploration: 0
   _exploreRate: 100
 --- !u!212 &212764054482809640
